@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browser Scuola</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; background: #f0f0f0; }
+        .barra { padding: 15px; background: #333; display: flex; gap: 10px; }
+        input { flex: 1; padding: 10px; font-size: 16px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; font-size: 16px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        iframe { flex: 1; border: none; background: white; }
+    </style>
+</head>
+<body>
+    <div class="barra">
+        <input type="text" id="indirizzo" placeholder="es. wikipedia.org">
+        <button onclick="naviga()">VAI</button>
+    </div>
+    <iframe id="schermo"></iframe>
+
+    <script>
+        // ---------------------------------------------------------
+        // INCOLLA QUI SOTTO IL LINK CHE HAI COPIATO DA COLAB!
+        // Esempio: const COLAB_URL = "https://a1b2-34-56.ngrok-free.app";
+        const COLAB_URL = "INCOLLA_QUI_IL_LINK_NGROK"; 
+        // ---------------------------------------------------------
+
+        function naviga() {
+            let url = document.getElementById('indirizzo').value;
+            let schermo = document.getElementById('schermo');
+            // Chiediamo a Colab di scaricare il sito
+            schermo.src = COLAB_URL + "/vai?url=" + url;
+        }
+
+        // Questo serve per installare la PWA (Service Worker finto per ora)
+        if ('serviceWorker' in navigator) {
+           navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>
