@@ -6,37 +6,74 @@
     <link rel="manifest" href="manifest.json">
     <style>
         body { font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; background: #f0f0f0; }
-        .barra { padding: 15px; background: #333; display: flex; gap: 10px; }
-        input { flex: 1; padding: 10px; font-size: 16px; border-radius: 5px; border: none; }
-        button { padding: 10px 20px; font-size: 16px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        /* Stile della barra di navigazione */
+        .barra { padding: 10px; background: #222; display: flex; gap: 8px; align-items: center; }
+        
+        /* Stile dei pulsanti e input */
+        input { flex: 1; padding: 10px; font-size: 16px; border-radius: 5px; border: none; outline: none; }
+        button { padding: 10px 15px; font-size: 18px; background: #444; color: white; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s;}
+        button:active { background: #666; }
+        button.vai { background: #28a745; font-weight: bold; }
+        
         iframe { flex: 1; border: none; background: white; }
     </style>
 </head>
 <body>
+
     <div class="barra">
-        <input type="text" id="indirizzo" placeholder="es. wikipedia.org">
-        <button onclick="naviga()">VAI</button>
+        <button onclick="muovi(-1)">⬅</button>
+        <button onclick="muovi(1)">➡</button>
+        
+        <input type="text" id="indirizzo" placeholder="Cerca o inserisci sito...">
+        <button class="vai" onclick="naviga()">VAI</button>
     </div>
+
     <iframe id="schermo"></iframe>
 
     <script>
         // ---------------------------------------------------------
-        // INCOLLA QUI SOTTO IL LINK CHE HAI COPIATO DA COLAB!
-        // Esempio: const COLAB_URL = "https://a1b2-34-56.ngrok-free.app";
+        // RICORDATI DI INCOLLARE IL LINK AGGIORNATO DI COLAB QUI SOTTO!
         const COLAB_URL = "https://unleaflike-trula-unpastured.ngrok-free.dev/"; 
         // ---------------------------------------------------------
 
         function naviga() {
             let url = document.getElementById('indirizzo').value;
             let schermo = document.getElementById('schermo');
-            // Chiediamo a Colab di scaricare il sito
+            
+            // Se l'utente non ha scritto nulla, non fare nulla
+            if (!url) return;
+
+            // Mandiamo il comando al motore
             schermo.src = COLAB_URL + "/vai?url=" + url;
         }
 
-        // Questo serve per installare la PWA (Service Worker finto per ora)
+        // Funzione per Indietro (-1) e Avanti (+1)
+        function muovi(direzione) {
+            let schermo = document.getElementById('schermo');
+            try {
+                if (direzione === -1) {
+                    schermo.contentWindow.history.back();
+                } else {
+                    schermo.contentWindow.history.forward();
+                }
+            } catch (e) {
+                alert("Sicurezza: Impossibile navigare nella cronologia interna per questo sito.");
+            }
+        }
+
+        // Permette di premere INVIO sulla tastiera invece del tasto VAI
+        document.getElementById("indirizzo").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                naviga();
+            }
+        });
+
         if ('serviceWorker' in navigator) {
            navigator.serviceWorker.register('sw.js');
         }
     </script>
 </body>
 </html>
+
+
