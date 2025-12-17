@@ -1,0 +1,15 @@
+{
+  "name": "Browser Scuola",
+  "short_name": "Browser",
+  "start_url": "/scuola-browser/",
+  "display": "standalone",
+  "background_color": "#333333",
+  "theme_color": "#333333",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1041/1041869.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
