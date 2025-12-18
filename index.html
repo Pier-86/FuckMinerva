@@ -25,19 +25,18 @@
         <button onclick="muovi(-1)">⬅</button>
         <button onclick="muovi(1)">➡</button>
         
-        <input type="text" id="indirizzo" placeholder="Cerca o inserisci sito...">
+        <input type="text" id="indirizzo" placeholder="Cerca su DuckDuckGo o scrivi sito...">
         <button class="vai" onclick="naviga()">VAI</button>
     </div>
 
     <iframe id="schermo"></iframe>
 
-  
-       ----------------------------
-
-   <input type="text" id="indirizzo" placeholder="Cerca su DuckDuckGo o scrivi sito...">
-
     <script>
-          const COLAB_URL = "https://unleaflike-trula-unpastured.ngrok-free.dev/"; 
+        // ---------------------------------------------------------
+        // ATTENZIONE: Incolla il link SENZA la barra "/" finale
+        // Esempio corretto: "https://xxxx.ngrok-free.app"
+        const COLAB_URL = "https://unleaflike-trula-unpastured.ngrok-free.dev"; 
+        // ---------------------------------------------------------
 
         function naviga() {
             let input = document.getElementById('indirizzo').value;
@@ -47,20 +46,17 @@
 
             let urlDestinazione = "";
 
-            // Se l'utente scrive un sito vero (es. wikipedia.org), vai lì
+            // LOGICA INTELLIGENTE:
+            // Se c'è un punto e non ci sono spazi (es. "wikipedia.org"), lo trattiamo come sito.
             if (input.includes(".") && !input.includes(" ")) {
                  urlDestinazione = input;
             } else {
                 // ALTRIMENTI Cerca su DuckDuckGo Lite (versione leggera HTML)
-                // Questa versione non ha Javascript pesante e non viene bloccata facilmente
                 urlDestinazione = "https://html.duckduckgo.com/html?q=" + encodeURIComponent(input);
             }
 
             schermo.src = COLAB_URL + "/vai?url=" + urlDestinazione;
         }
-
-
-           ---------------
 
         // Funzione per Indietro (-1) e Avanti (+1)
         function muovi(direzione) {
@@ -72,7 +68,8 @@
                     schermo.contentWindow.history.forward();
                 }
             } catch (e) {
-                alert("Sicurezza: Impossibile navigare nella cronologia interna per questo sito.");
+                // Questo errore appare se il sito blocca l'accesso alla storia per sicurezza
+                console.log("Navigazione iframe bloccata dal sito ospite");
             }
         }
 
