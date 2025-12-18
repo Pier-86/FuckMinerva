@@ -31,22 +31,36 @@
 
     <iframe id="schermo"></iframe>
 
+  
+       ----------------------------
+
+   <input type="text" id="indirizzo" placeholder="Cerca su DuckDuckGo o scrivi sito...">
+
     <script>
-        // ---------------------------------------------------------
-        // RICORDATI DI INCOLLARE IL LINK AGGIORNATO DI COLAB QUI SOTTO!
-        const COLAB_URL = "https://unleaflike-trula-unpastured.ngrok-free.dev/"; 
-        // ---------------------------------------------------------
+          const COLAB_URL = "https://unleaflike-trula-unpastured.ngrok-free.dev/"; 
 
         function naviga() {
-            let url = document.getElementById('indirizzo').value;
+            let input = document.getElementById('indirizzo').value;
             let schermo = document.getElementById('schermo');
             
-            // Se l'utente non ha scritto nulla, non fare nulla
-            if (!url) return;
+            if (!input) return;
 
-            // Mandiamo il comando al motore
-            schermo.src = COLAB_URL + "/vai?url=" + url;
+            let urlDestinazione = "";
+
+            // Se l'utente scrive un sito vero (es. wikipedia.org), vai lì
+            if (input.includes(".") && !input.includes(" ")) {
+                 urlDestinazione = input;
+            } else {
+                // ALTRIMENTI Cerca su DuckDuckGo Lite (versione leggera HTML)
+                // Questa versione non ha Javascript pesante e non viene bloccata facilmente
+                urlDestinazione = "https://html.duckduckgo.com/html?q=" + encodeURIComponent(input);
+            }
+
+            schermo.src = COLAB_URL + "/vai?url=" + urlDestinazione;
         }
+
+
+           ---------------
 
         // Funzione per Indietro (-1) e Avanti (+1)
         function muovi(direzione) {
